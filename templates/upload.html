@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCOS MRI Classifier - Upload Guidelines</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .correct-example {
+            border: 2px solid green;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        .incorrect-example {
+            border: 2px solid red;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        .example-heading {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">PCOS MRI Image Upload Guidelines</h1>
+
+        <div class="alert alert-info">
+            <h4>Important Notice</h4>
+            <p>This application is designed to analyze ovarian MRI scans for PCOS indicators. Regular photographs of people,
+            objects, or non-medical images will be rejected by our validation system.</p>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h2 class="h5 mb-0">Acceptable Image Types</h2>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>Medical MRI scans</strong> of ovaries</li>
+                    <li>File formats: JPEG, PNG, TIFF, DICOM</li>
+                    <li>Maximum file size: 10MB</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="correct-example">
+                    <div class="example-heading text-success">✓ CORRECT: Ovarian MRI Example</div>
+                    <p>Medical MRI scans showing clear views of ovarian structures</p>
+                    <div class="text-center">
+                        <!-- Placeholder for MRI example image -->
+                        <div style="background-color: #eee; height: 200px; display: flex; align-items: center; justify-content: center;">
+                            [Ovarian MRI Scan Example]
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="incorrect-example">
+                    <div class="example-heading text-danger">✗ INCORRECT: Regular Photo Example</div>
+                    <p>Regular photographs, selfies, or non-medical images</p>
+                    <div class="text-center">
+                        <!-- Placeholder for incorrect example -->
+                        <div style="background-color: #eee; height: 200px; display: flex; align-items: center; justify-content: center;">
+                            [Regular Photograph Example]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h2 class="h5 mb-0">Medical Disclaimer</h2>
+            </div>
+            <div class="card-body">
+                <p>This tool is for demonstration purposes only and is not a medical diagnostic device. The results should not
+                be used for diagnosis or to replace professional medical advice. Always consult with a qualified healthcare
+                provider for proper diagnosis and treatment of PCOS or any medical condition.</p>
+            </div>
+        </div>
+
+        <div class="text-center mb-5">
+            <a href="/" class="btn btn-primary btn-lg">Return to Main Page</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PCOS Chatbot Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background:#1e1e2f; color:#fff; font-family:'Segoe UI',sans-serif; }
+    .chat-container { max-width:800px; margin:40px auto; background:#2a2a40; padding:20px; border-radius:10px; box-shadow:0 0 10px #000; }
+    .chat-log { max-height:500px; overflow-y:auto; margin-bottom:20px; }
+    .chat-msg.user .bubble { background:#3b82f6; color:#fff; border-radius:15px 15px 0 15px; padding:10px; display:inline-block; }
+    .chat-msg.bot .bubble  { background:#444459; color:#f1f1f1; border-radius:15px 15px 15px 0; padding:10px; display:inline-block; }
+    .timestamp { font-size:0.75rem; color:#ccc; margin-top:3px; }
+    .image-preview img { max-width:200px; border-radius:8px; margin-top:10px; border:1px solid #555; }
+    .chat-input-group { display:flex; gap:10px; }
+    .btn-send { background:#3b82f6; color:#fff; border:none; }
+    .btn-send:hover { background:#2563eb; }
+    .form-control, .form-control:focus { background:#2a2a40; border-color:#555; color:#fff; }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div id="chat-log" class="chat-log"></div>
+    <form id="chatForm" enctype="multipart/form-data">
+      <div class="chat-input-group mb-2">
+        <input type="file" class="form-control" name="file" id="file">
+      </div>
+      <div class="chat-input-group">
+        <input type="text" class="form-control" name="description" id="description"
+               placeholder="Ask about PCOS, upload an MRI, or say hello..." autocomplete="off" />
+        <button class="btn-send" type="submit">Send</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function getTimeStamp() { return new Date().toLocaleString(); }
+    function appendMessage(role, text, imgUrl=null) {
+      const log = document.getElementById("chat-log");
+      const msg = document.createElement("div");
+      msg.classList.add("chat-msg", role);
+      const bubble = document.createElement("div");
+      bubble.classList.add("bubble");
+      bubble.innerText = text;
+      msg.appendChild(bubble);
+      if (imgUrl) {
+        const p = document.createElement("div");
+        p.classList.add("image-preview");
+        p.innerHTML = `<img src="${imgUrl}">`;
+        msg.appendChild(p);
+      }
+      const ts = document.createElement("div");
+      ts.classList.add("timestamp");
+      ts.innerText = getTimeStamp();
+      msg.appendChild(ts);
+      log.appendChild(msg);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function appendDownloadLink(url) {
+      const log = document.getElementById("chat-log");
+      const linkMsg = document.createElement("div");
+      linkMsg.classList.add("chat-msg", "bot");
+      const linkBubble = document.createElement("div");
+      linkBubble.classList.add("bubble");
+      linkBubble.innerHTML = `<a href="${url}" download style="color:#3b82f6; text-decoration:underline;">Download Report (DOCX)</a>`;
+      linkMsg.appendChild(linkBubble);
+      const ts = document.createElement("div");
+      ts.classList.add("timestamp");
+      ts.innerText = getTimeStamp();
+      linkMsg.appendChild(ts);
+      log.appendChild(linkMsg);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    document.getElementById('chatForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const desc = document.getElementById('description').value.trim();
+      const fileEl = document.getElementById('file');
+      appendMessage('user', desc || '[image upload]');
+      const form = new FormData();
+      form.append('description', desc);
+      if (fileEl.files[0]) form.append('file', fileEl.files[0]);
+
+      const res = await fetch('/analyze', { method: 'POST', body: form });
+      const data = await res.json();
+      if (data.error) {
+        appendMessage('bot', `❌ ${data.error}`);
+      } else {
+        appendMessage('bot', data.result, data.image_url);
+        if (data.download_url) {
+          appendDownloadLink(data.download_url);
+        }
+      }
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
